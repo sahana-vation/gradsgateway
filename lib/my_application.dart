@@ -84,7 +84,7 @@ class _MyApplicationsScreenState extends State<MyApplicationsScreen> {
         children: [
 
           SvgPicture.asset(
-            'assets/images/Asset 1 1.svg',
+            'assets/images/Asset_1_1.svg',
             width: MediaQuery.of(context).size.width,
             height: 200,
             fit: BoxFit.cover,

@@ -47,7 +47,7 @@ class ApplicationDetailsScreen extends StatelessWidget {
               color: Colors.white, // Ensures background matches
               padding: EdgeInsets.all(16),
               child: SvgPicture.asset(
-                'assets/images/Asset 1 2.svg',
+                'assets/images/Asset_1_2.svg',
                 width: MediaQuery.of(context).size.width,
                 height: 200,
                 fit: BoxFit.cover,

@@ -240,7 +240,7 @@ void showOtpBottomSheet(BuildContext context, String phone, String sentOtp) {
                 top: -38,
                 left: (MediaQuery.of(context).size.width - 100) / 2,
                 child: Image.asset(
-                  'assets/images/Group (4).png',
+                  'assets/images/Group_(4).png',
                   width: 100,
                   height: 106,
                 ),

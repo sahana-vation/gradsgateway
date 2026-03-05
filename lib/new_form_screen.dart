@@ -145,7 +145,7 @@ class _NewFormScreenState extends State<NewFormScreen> {
               alignment: Alignment.bottomCenter,
               children: [
                 SvgPicture.asset(
-                  'assets/images/Asset 1 3 (1).svg',
+                  'assets/images/Asset_1_3_(1).svg',
                   width: MediaQuery.of(context).size.width,
                   height: 200,
                   fit: BoxFit.cover,

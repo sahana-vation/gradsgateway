@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +16,8 @@ class ProfileScreen extends StatefulWidget {
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
+
+
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
@@ -36,92 +39,104 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            /// Background Image
-            Positioned(
-              top: 0,
-              child: Image.asset(
-                'assets/images/pexels-artyusufpatel-11458867 1.png',
-                width: MediaQuery.of(context).size.width,
-                height: 235,
-                fit: BoxFit.cover,
-              ),
-            ),
-SizedBox(height: 20,),
-            /// Fixed Profile Avatar
-            Positioned(
-              top: 180, // Adjust as needed
-              child: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/icon 512.png'),
-                radius: 45,
-              ),
-            ),
-            Positioned(
-              top: 280,
-              child: SvgPicture.asset(
-                'assets/images/Frame 1628.svg',
-                width: 260,
-              ),
-            ),
+    return  AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: SafeArea(
+        child: Scaffold(
+          extendBodyBehindAppBar: true, // Ensures content goes behind status bar
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            toolbarHeight: 50,
+            systemOverlayStyle: SystemUiOverlayStyle.light,// Keeps the status bar only
+          ),
 
-            /// Main Content (Fixed, No Scroll)
-            Center(
-              child: SizedBox(
-                width: 375,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center, // Keeps content centered
-                    children: [
-                      SizedBox(height: 310,),
-                  
-                      /// Fetch and Display User Details
-                      FutureBuilder<Map<String, dynamic>>(
-                        future: _fetchProfileData(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return _buildShimmerLoading();
-                          } else if (snapshot.hasError) {
-                            return Text("Error: ${snapshot.error}");
-                          } else if (!snapshot.hasData) {
-                            return Text("No profile data found");
-                          }
-                  
-                          final data = snapshot.data!;
-                          return Column(
-                            children: [
-                              _buildInputField("Full Name", data['Name'] ?? "N/A"),
-                              _buildInputField("Email", data['Email'] ?? "N/A"),
-                              _buildInputField("Phone Number", widget.phoneNumber),
-                              _buildInputField("Role", data['type'] ?? "N/A"),
-                            ],
-                          );
-                        },
-                      ),
-                  
-                      SizedBox(height: 10),
-                  
-                      /// Custom Logout & Delete Widgets
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          DeleteAccountWidget(onDelete: () => _deleteAccount(context)),
-                          SizedBox(width: 6),
-                          LogoutWidget(onLogout: () => _logout(context)),
-                        ],
-                      ),
-                  
-                      SizedBox(height: 20),
-                    ],
+          body: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              /// Background Image
+              Positioned(
+                top: 0,
+                child: Image.asset(
+                  'assets/images/pexels-artyusufpatel-11458867_1.png',
+                  width: MediaQuery.of(context).size.width,
+                  height: 235,
+                  fit: BoxFit.fill,
+                ),
+              ),
+
+      SizedBox(height: 20,),
+              /// Fixed Profile Avatar
+              Positioned(
+                top: 180, // Adjust as needed
+                child: CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/icon_512.png'),
+                  radius: 45,
+                ),
+              ),
+              Positioned(
+                top: 280,
+                child: SvgPicture.asset(
+                  'assets/images/Frame_1628.svg',
+                  width: 260,
+                ),
+              ),
+
+              /// Main Content (Fixed, No Scroll)
+              Center(
+                child: SizedBox(
+                  width: 375,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center, // Keeps content centered
+                      children: [
+                        SizedBox(height: 310,),
+
+                        /// Fetch and Display User Details
+                        FutureBuilder<Map<String, dynamic>>(
+                          future: _fetchProfileData(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return _buildShimmerLoading();
+                            } else if (snapshot.hasError) {
+                              return Text("Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData) {
+                              return Text("No profile data found");
+                            }
+
+                            final data = snapshot.data!;
+                            return Column(
+                              children: [
+                                _buildInputField("Full Name", data['Name'] ?? "N/A"),
+                                _buildInputField("Email", data['Email'] ?? "N/A"),
+                                _buildInputField("Phone Number", widget.phoneNumber),
+                                _buildInputField("Role", data['type'] ?? "N/A"),
+                              ],
+                            );
+                          },
+                        ),
+
+                        SizedBox(height: 10),
+
+                        /// Custom Logout & Delete Widgets
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            DeleteAccountWidget(onDelete: () => _deleteAccount(context)),
+                            SizedBox(width: 6),
+                            LogoutWidget(onLogout: () => _logout(context)),
+                          ],
+                        ),
+
+                        SizedBox(height: 20),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

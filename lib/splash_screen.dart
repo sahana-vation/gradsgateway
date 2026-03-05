@@ -67,12 +67,13 @@ class _SplashScreenState extends State<SplashScreen> {
             top: -197,
             left: -49,
             child: Image.asset(
-              'assets/images/pexels-monirathnak-13632459 1 (1).png',
+              'assets/images/qwerty.png',
               width: 478,
               height: 650,
               fit: BoxFit.contain,
             ),
           ),
+
           // Content
           Padding(
             padding: const EdgeInsets.only(top: 430.0),
@@ -81,7 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/images/Group 22.png',
+                    'assets/images/Group_22.png',
                     width: 261,
                     height: 42,
                   ),
