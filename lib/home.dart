@@ -461,17 +461,12 @@
 // }
 
 
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gradsgatewayconnect/my_application.dart';
 import 'package:gradsgatewayconnect/profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'dummy.dart';
 import 'new_form_screen.dart';
-import 'lead_application_screen.dart';
-import 'privacy_policy_screen.dart';
 import 'splash_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -485,6 +480,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+
+  List<Widget> _getPages() {
+    return [
+      _buildHomePage(),
+      MyApplicationsScreen(phoneNumber: widget.phoneNumber),
+      ProfileScreen(phoneNumber: widget.phoneNumber, name: widget.name.toString()),
+    ];
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
   // Logout function
   Future<void> _logout(BuildContext context) async {
     final result = await showDialog<bool>(
@@ -522,60 +532,83 @@ class _HomeScreenState extends State<HomeScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: SvgPicture.asset(
-          'assets/images/gg logo.svg',
+          'assets/images/gg_logo.svg',
           width: 40,
           height: 40,
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 10),
-            Image.asset(
-              'assets/images/Group 30.png',
-              width: 410,
-              height: 410,
-            ),
-            SizedBox(height: 20),
+      body: _getPages()[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        selectedItemColor: Color(0xFF0FB7C6),
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.description),
+            label: 'Applications',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
+  }
 
-            // Colored Cards Section
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child:
-              GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                childAspectRatio: 167 / 105, // Slightly increased to prevent overflow
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  _buildCard("New", "Application", Color(0xFFF25959), () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => NewFormScreen(
-                      phoneNumber: widget.phoneNumber,
-                      name: widget.name,)));
-                  }),
-                  _buildCard("My", "Applications", Color(0xFF0FB7C6), () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => MyApplicationsScreen(
-                      phoneNumber: widget.phoneNumber,
-                    )));
-                  }),
-                  _buildCard("My", "Profile", Color(0xFF00D881), () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => ProfileScreen(
-                      phoneNumber: widget.phoneNumber,
-                      name: widget.name.toString(),
+  Widget _buildHomePage() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: 10),
+          Image.asset(
+            'assets/images/Group_30.png',
+            width: 410,
+            height: 410,
+          ),
+          SizedBox(height: 20),
 
-                    )));
-                  }),
-                  _buildCard("Logout", "Profile", Color(0xFFFDBD28), () {
-                    _logout(context);
-                  }),
-                ],
-              ),
+          // Colored Cards Section
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child:
+            GridView.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              childAspectRatio: 167 / 105, // Slightly increased to prevent overflow
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              children: [
+                _buildCard("New", "Application", Color(0xFFF25959), () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => NewFormScreen(
+                    phoneNumber: widget.phoneNumber,
+                    name: widget.name,)));
+                }),
+                _buildCard("My", "Applications", Color(0xFF0FB7C6), () {
+                  setState(() {
+                    _selectedIndex = 1;
+                  });
+                }),
+                _buildCard("My", "Profile", Color(0xFF00D881), () {
+                  setState(() {
+                    _selectedIndex = 2;
+                  });
+                }),
+                _buildCard("Logout", "Profile", Color(0xFFFDBD28), () {
+                  _logout(context);
+                }),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

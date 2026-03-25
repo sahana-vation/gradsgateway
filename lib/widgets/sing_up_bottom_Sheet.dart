@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:gradsgatewayconnect/widgets/otp_bottom_sheet.dart';
 import 'package:gradsgatewayconnect/widgets/sign_in_bottom_sheet.dart';
@@ -147,9 +146,9 @@ void showSignUpBottomSheet(BuildContext parentContext) {
                       Center(
                         child: Column(
                           children: [
-                            Image.asset('assets/images/Group 11 (1).png', width: 54.83, height: 50.0),
+                            Image.asset('assets/images/Group_11_(1).png', width: 54.83, height: 50.0),
                             SizedBox(height: 8),
-                            Image.asset('assets/images/Grads Gateway.png', width: 215, height: 25),
+                            Image.asset('assets/images/Grads_Gateway.png', width: 215, height: 25),
                           ],
                         ),
                       ),
